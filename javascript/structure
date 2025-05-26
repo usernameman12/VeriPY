@@ -1,0 +1,9 @@
+email-verification/
+├── README.md
+├── config.js
+├── mailer.js
+├── server.js
+├── views/
+│   └── after.html         # Protected HTML loaded after verification
+├── public/
+│   └── verify.html        # Static page users load

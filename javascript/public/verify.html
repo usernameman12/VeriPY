@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Email Verification Bolierplate Page</title>
+</head>
+<body>
+  <h2>Verify Your Email</h2>
+  <div id="form">
+    <input id="email" placeholder="Enter email" />
+    <button onclick="send()">Send Code</button><br><br>
+    <input id="code" placeholder="Enter code" />
+    <button onclick="verify()">Verify</button>
+  </div>
+  <div id="result"></div>
+
+  <script>
+    async function send() {
+      const email = document.getElementById('email').value;
+      await fetch('/send', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email })
+      });
+    }
+
+    async function verify() {
+      const code = document.getElementById('code').value;
+      const res = await fetch('/verify', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ code })
+      });
+      const result = await res.json();
+
+      if (result.success) {
+        const response = await fetch('/after');
+        const content = await response.text();
+        document.body.innerHTML = content;
+      } else {
+        document.getElementById('result').innerText = 'Invalid code.';
+      }
+    }
+  </script>
+</body>
+</html>
